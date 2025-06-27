@@ -426,6 +426,84 @@ async def read_gao_report(
         return ""
 
 
+# GAO (Government Accountability Office) tools
+@mcp.tool()
+async def search_gao(
+    query: str,
+    max_results: int = 10,
+    date_filter: str = None,
+    topics: str = None,
+    agencies: str = None,
+) -> List[Dict]:
+    """Search Government Accountability Office (GAO) reports and publications.
+
+    Args:
+        query: Search query string (e.g., 'cybersecurity', 'defense spending').
+        max_results: Maximum number of reports to return (default: 10).
+        date_filter: Date filter ('week', 'month', '6months', 'year') or None.
+        topics: Comma-separated topic filters (e.g., 'Agriculture,Healthcare').
+        agencies: Comma-separated agency filters (e.g., 'Department of Defense,NASA').
+    Returns:
+        List of GAO report metadata in dictionary format.
+    """
+    try:
+        # Parse comma-separated filters
+        topic_list = [t.strip() for t in topics.split(',')] if topics else None
+        agency_list = [a.strip() for a in agencies.split(',')] if agencies else None
+
+        reports = gao_searcher.search(
+            query=query,
+            max_results=max_results,
+            date_filter=date_filter,
+            topics=topic_list,
+            agencies=agency_list
+        )
+        return [report.to_dict() for report in reports]
+    except Exception as e:
+        print(f"Error searching GAO: {e}")
+        return []
+
+
+@mcp.tool()
+async def download_gao(
+    report_id: str,
+    save_path: str = "./downloads",
+) -> str:
+    """Download a GAO report PDF.
+
+    Args:
+        report_id: GAO report ID (e.g., 'GAO-24-106829').
+        save_path: Directory to save the PDF (default: './downloads').
+    Returns:
+        str: Path to the downloaded PDF file.
+    """
+    try:
+        return gao_searcher.download_pdf(report_id, save_path)
+    except Exception as e:
+        print(f"Error downloading GAO report {report_id}: {e}")
+        return ""
+
+
+@mcp.tool()
+async def read_gao_report(
+    report_id: str,
+    save_path: str = "./downloads",
+) -> str:
+    """Read and extract text content from a GAO report PDF.
+
+    Args:
+        report_id: GAO report ID (e.g., 'GAO-24-106829').
+        save_path: Directory where the PDF is/will be saved (default: './downloads').
+    Returns:
+        str: The extracted text content of the report.
+    """
+    try:
+        return gao_searcher.read_document(report_id, save_path)
+    except Exception as e:
+        print(f"Error reading GAO report {report_id}: {e}")
+        return ""
+
+
 # January 6th Committee tools
 @mcp.tool()
 async def search_jan6(
