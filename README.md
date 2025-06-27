@@ -34,10 +34,11 @@ A Model Context Protocol (MCP) server for searching and downloading academic pap
 ## Features
 
 - **Multi-Source Support**: Search and download papers from arXiv, PubMed, bioRxiv, medRxiv, Google Scholar, and IACR ePrint Archive.
-- **Standardized Output**: Papers are returned in a consistent dictionary format via the `Paper` class.
+- **Government Document Access**: Search and download government reports from GAO (Government Accountability Office).
+- **Standardized Output**: Papers and reports are returned in a consistent dictionary format via the `Paper` class.
 - **Asynchronous Tools**: Efficiently handles network requests using `httpx`.
 - **MCP Integration**: Compatible with MCP clients for LLM context enhancement.
-- **Extensible Design**: Easily add new academic platforms by extending the `academic_platforms` module.
+- **Extensible Design**: Easily add new platforms by extending the `academic_platforms` or `government_platforms` modules.
 
 ---
 
@@ -145,14 +146,20 @@ We welcome contributions! Here's how to get started:
 
 ## TODO
 
-### Planned Academic Platforms
+### Supported Platforms
 
+#### Academic Platforms
 - [√] arXiv
 - [√] PubMed
 - [√] bioRxiv
 - [√] medRxiv
 - [√] Google Scholar
 - [√] IACR ePrint Archive
+
+#### Government Platforms
+- [√] GAO (Government Accountability Office)
+
+### Planned Academic Platforms
 - [ ] Semantic Scholar
 - [ ] PubMed Central (PMC)
 - [ ] Science Direct
@@ -165,6 +172,16 @@ We welcome contributions! Here's how to get started:
 - [ ] ResearchGate
 - [ ] CORE
 - [ ] Microsoft Academic
+
+### Planned Government Platforms
+- [ ] [Select January 6th Committee Final Report and Supporting Materials Collection](https://www.govinfo.gov/collection/january-6th-committee-final-report?path=/GPO/January%206th%20Committee%20Final%20Report%20and%20Supporting%20Materials%20Collection)
+- [ ] Congressional Research Service (CRS)
+- [ ] Federal Register
+- [ ] Inspector General Reports
+- [ ] Federal Court Documents
+- [ ] USPTO Patent Database
+- [ ] EPA Reports
+- [ ] CDC Publications
 
 ---
 
