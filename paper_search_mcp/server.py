@@ -11,6 +11,7 @@ from .academic_platforms.iacr import IACRSearcher
 
 # from .academic_platforms.hub import SciHubSearcher
 from .government_platforms.gao import GAOSearcher
+from .government_platforms.jan6 import Jan6Searcher
 from .paper import Paper
 
 # Initialize MCP server
@@ -24,6 +25,7 @@ medrxiv_searcher = MedRxivSearcher()
 google_scholar_searcher = GoogleScholarSearcher()
 iacr_searcher = IACRSearcher()
 gao_searcher = GAOSearcher()
+jan6_searcher = Jan6Searcher()
 # scihub_searcher = SciHubSearcher()
 
 
@@ -349,6 +351,83 @@ async def read_gao_report(
         return gao_searcher.read_document(report_id, save_path)
     except Exception as e:
         print(f"Error reading GAO report {report_id}: {e}")
+        return ""
+
+
+# January 6th Committee tools
+@mcp.tool()
+async def search_jan6(
+    query: str,
+    max_results: int = 10,
+    document_type: str = None,
+    date_filter: str = None,
+    source_filter: str = None,
+    collection: str = "witness_testimony",
+) -> List[Dict]:
+    """Search January 6th Committee documents and materials.
+
+    Args:
+        query: Search query string (e.g., 'trump', 'testimony', 'capitol police').
+        max_results: Maximum number of documents to return (default: 10).
+        document_type: Filter by type ('testimony', 'hearing', 'report', 'disclosure').
+        date_filter: Date filter ('week', 'month', '6months', 'year') or None.
+        source_filter: Source collection filter or None.
+        collection: Which collection to search ('witness_testimony', 'committee_materials').
+    Returns:
+        List of January 6th Committee document metadata in dictionary format.
+    """
+    try:
+        documents = jan6_searcher.search(
+            query=query,
+            max_results=max_results,
+            document_type=document_type,
+            date_filter=date_filter,
+            source_filter=source_filter,
+            collection=collection
+        )
+        return [doc.to_dict() for doc in documents]
+    except Exception as e:
+        print(f"Error searching Jan6: {e}")
+        return []
+
+
+@mcp.tool()
+async def download_jan6(
+    document_id: str,
+    save_path: str = "./downloads",
+) -> str:
+    """Download a January 6th Committee document PDF.
+
+    Args:
+        document_id: Document identifier (e.g., Internet Archive identifier).
+        save_path: Directory to save the PDF (default: './downloads').
+    Returns:
+        str: Path to the downloaded PDF file.
+    """
+    try:
+        return jan6_searcher.download_pdf(document_id, save_path)
+    except Exception as e:
+        print(f"Error downloading Jan6 document {document_id}: {e}")
+        return ""
+
+
+@mcp.tool()
+async def read_jan6_document(
+    document_id: str,
+    save_path: str = "./downloads",
+) -> str:
+    """Read and extract text content from a January 6th Committee document PDF.
+
+    Args:
+        document_id: Document identifier (e.g., Internet Archive identifier).
+        save_path: Directory where the PDF is/will be saved (default: './downloads').
+    Returns:
+        str: The extracted text content of the document.
+    """
+    try:
+        return jan6_searcher.read_document(document_id, save_path)
+    except Exception as e:
+        print(f"Error reading Jan6 document {document_id}: {e}")
         return ""
 
 

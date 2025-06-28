@@ -34,7 +34,7 @@ A Model Context Protocol (MCP) server for searching and downloading academic pap
 ## Features
 
 - **Multi-Source Support**: Search and download papers from arXiv, PubMed, bioRxiv, medRxiv, Google Scholar, and IACR ePrint Archive.
-- **Government Document Access**: Search and download government reports from GAO (Government Accountability Office).
+- **Government Document Access**: Search and download government reports from GAO (Government Accountability Office) and January 6th Committee documents.
 - **Standardized Output**: Papers and reports are returned in a consistent dictionary format via the `Paper` class.
 - **Asynchronous Tools**: Efficiently handles network requests using `httpx`.
 - **MCP Integration**: Compatible with MCP clients for LLM context enhancement.
@@ -158,6 +158,7 @@ We welcome contributions! Here's how to get started:
 
 #### Government Platforms
 - [√] GAO (Government Accountability Office)
+- [√] January 6th Committee (witness testimony, hearings, reports)
 
 ### Planned Academic Platforms
 - [ ] Semantic Scholar
@@ -174,11 +175,10 @@ We welcome contributions! Here's how to get started:
 - [ ] Microsoft Academic
 
 ### Planned Government Platforms
-- [ ] [Select January 6th Committee Final Report and Supporting Materials Collection](https://www.govinfo.gov/collection/january-6th-committee-final-report?path=/GPO/January%206th%20Committee%20Final%20Report%20and%20Supporting%20Materials%20Collection)
-- [ ] Congressional Research Service (CRS)
-- [ ] Federal Register
-- [ ] Inspector General Reports
 - [ ] Federal Court Documents
+- [ ] Congressional Research Service (CRS)
+- [ ] Inspector General Reports
+- [ ] Federal Register
 - [ ] USPTO Patent Database
 - [ ] EPA Reports
 - [ ] CDC Publications

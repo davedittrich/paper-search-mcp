@@ -47,20 +47,21 @@ Each academic platform has its own searcher class in `academic_platforms/`:
 ### Government Platform Integration
 
 Government document platforms in `government_platforms/`:
-- `gao.py` - Government Accountability Office reports and publications (web scraping)
+- `gao.py` - Government Accountability Office reports and publications (RSS feeds + web scraping)
+- `jan6.py` - January 6th Committee documents from Internet Archive (API + OCR text)
 
 ### Tool Categories
 
 The MCP server exposes three types of tools for each platform:
-- **Search tools**: `search_arxiv`, `search_pubmed`, `search_gao`, etc. - Return paper/document metadata
-- **Download tools**: `download_arxiv`, `download_biorxiv`, `download_gao`, etc. - Download PDF files
-- **Read tools**: `read_arxiv_paper`, `read_iacr_paper`, `read_gao_report`, etc. - Extract text from papers/documents
+- **Search tools**: `search_arxiv`, `search_pubmed`, `search_gao`, `search_jan6`, etc. - Return paper/document metadata
+- **Download tools**: `download_arxiv`, `download_biorxiv`, `download_gao`, `download_jan6`, etc. - Download PDF files
+- **Read tools**: `read_arxiv_paper`, `read_iacr_paper`, `read_gao_report`, `read_jan6_document`, etc. - Extract text from papers/documents
 
 ## Dependencies
 
 Core dependencies (see `pyproject.toml`):
 - `fastmcp` - MCP server framework
-- `mcp[cli]>=1.6.0` - MCP SDK  
+- `mcp[cli]>=1.6.0` - MCP SDK
 - `requests` - HTTP client for API calls
 - `feedparser` - XML/RSS parsing (arXiv)
 - `PyPDF2>=3.0.0` - PDF text extraction
@@ -71,7 +72,7 @@ Core dependencies (see `pyproject.toml`):
 ### Academic Platforms
 
 1. Create new searcher class in `academic_platforms/` implementing the common interface
-2. Add searcher instance to `server.py` 
+2. Add searcher instance to `server.py`
 3. Define search/download/read tool functions following existing patterns
 4. Add comprehensive tests in `tests/`
 5. Update platform support list in README.md
@@ -85,6 +86,7 @@ Core dependencies (see `pyproject.toml`):
 5. Add comprehensive tests in `tests/`
 6. Update government platform support list in README.md
 
+
 ## Coding standards
 
 ### Python
@@ -95,7 +97,7 @@ Core dependencies (see `pyproject.toml`):
 
 ### Markdown
 
-- Ensure a blank line exists before and after each heading line
+- Ensure a blank line exists surounding each heading line and list
 
 ## Testing
 
