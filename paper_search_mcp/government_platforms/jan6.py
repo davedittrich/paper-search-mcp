@@ -605,6 +605,7 @@ class Jan6Searcher(DocumentSource):
         This is a third-tier fallback that uses the Just Security platform
         to search their comprehensive January 6th Committee document clearinghouse.
         """
+
         try:
             # Import JustSecurity searcher for fallback
             from .justsecurity import JustSecuritySearcher
