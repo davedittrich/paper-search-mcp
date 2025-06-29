@@ -33,7 +33,7 @@ A Model Context Protocol (MCP) server for searching and downloading academic pap
 
 ## Features
 
-- **Multi-Source Support**: Search and download papers from arXiv, PubMed, bioRxiv, medRxiv, Google Scholar, and IACR ePrint Archive.
+- **Multi-Source Support**: Search and download papers from arXiv, PubMed, bioRxiv, medRxiv, Google Scholar, IACR ePrint Archive, Semantic Scholar.
 - **Government Document Access**: Search and download government reports from GAO (Government Accountability Office), January 6th Committee documents, official U.S. Government publications via GovInfo.gov, and legal analysis from Just Security.
 - **Comprehensive Coverage**: Access to 40+ government document collections including Congressional materials, Federal Register, Presidential documents, and legal publications.
 - **Legal & National Security Documents**: Specialized access to Just Security's document clearinghouses covering January 6th Committee materials, Trump trials, congressional investigations, and national security analysis.
@@ -79,7 +79,10 @@ For users who want to quickly run the server:
            "/path/to/your/paper-search-mcp",
            "-m",
            "paper_search_mcp.server"
-         ]
+         ],
+         "env": {
+           "SEMANTIC_SCHOLAR_API_KEY": "" // Optional: For enhanced Semantic Scholar features
+         }
        }
      }
    }
@@ -157,6 +160,7 @@ We welcome contributions! Here's how to get started:
 - [√] medRxiv
 - [√] Google Scholar
 - [√] IACR ePrint Archive
+[√] Semantic Scholar
 
 #### Government Platforms
 - [√] GAO (Government Accountability Office)
@@ -203,7 +207,6 @@ We welcome contributions! Here's how to get started:
 - [√] National security legal analysis
 
 ### Planned Academic Platforms
-- [ ] Semantic Scholar
 - [ ] PubMed Central (PMC)
 - [ ] Science Direct
 - [ ] Springer Link

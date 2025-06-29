@@ -20,8 +20,8 @@ dependencies = [
     "PyPDF2>=3.0.0",
     "beautifulsoup4>=4.12.0",
     "lxml>=4.9.0", # Better HTML parser for BeautifulSoup
-    "pytest>=8.4.1",
-]
+    "httpx[socks]>=0.28.1",
+    "pytest>=8.4.1",]
 
 [tool.hatch.build.targets.wheel]
 packages = ["paper_search_mcp"]
