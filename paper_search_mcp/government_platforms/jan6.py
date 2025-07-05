@@ -3,12 +3,13 @@
 This module provides access to January 6th Committee documents via multiple APIs:
 1. GovInfo.gov API (primary) - Official government document repository
 2. Internet Archive API (fallback) - Historical document archive
-3. Public Citizen archive (future implementation)
+3. Just Security clearinghouse (enhanced fallback) - Legal analysis and document collection
 
 API Documentation Sources:
 - GovInfo.gov API: https://api.govinfo.gov/docs/
 - Internet Archive Search API: https://archive.org/help/aboutsearch.htm
 - Internet Archive Metadata API: https://archive.org/help/aboutmetadata.htm
+- Just Security January 6th Clearinghouse: https://www.justsecurity.org/77022/january-6-clearinghouse/
 """
 
 # Standard imports
@@ -233,9 +234,9 @@ class Jan6Searcher(DocumentSource):
 
                 return papers[:max_results]
 
-            # Fallback to Public Citizen archive if GovInfo fails
-            logger.info("GovInfo.gov search returned no results, trying Public Citizen fallback")
-            return self._search_via_public_citizen(query, max_results, document_type)
+            # Fallback to Just Security clearinghouse if GovInfo fails
+            logger.info("GovInfo.gov search returned no results, trying Just Security fallback")
+            return self._search_via_justsecurity_fallback(query, max_results, document_type)
 
         except Exception as e:
             logger.error("Search failed: %s", e)
@@ -591,50 +592,44 @@ class Jan6Searcher(DocumentSource):
         logger.warning("Unknown source filter '%s', returning all results", source_filter)
         return papers
 
-    def _search_via_public_citizen(
+    def _search_via_justsecurity_fallback(
         self,
         query: str,
         max_results: int,
         document_type: Optional[str] = None
     ) -> List[Paper]:
-        """Fallback search via Public Citizen January 6th archive
+        """Fallback search via Just Security January 6th clearinghouse
 
-        Public Citizen Archive: https://www.citizen.org/january-6-committee-archive/
+        Just Security Clearinghouse: https://www.justsecurity.org/77022/january-6-clearinghouse/
 
-        This is a third-tier fallback for when both GovInfo.gov and Internet Archive
-        fail to return results. The Public Citizen organization maintains an archive
-        of January 6th Committee materials.
-
-        Note: This implementation is currently a placeholder and returns empty results.
-        Future implementation would need to parse the HTML structure of the
-        Public Citizen archive page to extract document links and metadata.
+        This is a third-tier fallback that uses the Just Security platform
+        to search their comprehensive January 6th Committee document clearinghouse.
         """
-        # Acknowledge unused parameters for future implementation
-        _ = query
-        _ = max_results
-        _ = document_type
-
         try:
-            # Public Citizen archive URL
-            public_citizen_url = "https://www.citizen.org/january-6-committee-archive/"
+            # Import JustSecurity searcher for fallback
+            from .justsecurity import JustSecuritySearcher
 
-            response = self._make_request(public_citizen_url)
-            if not response:
-                logger.error("Failed to fetch Public Citizen archive")
-                return []
+            justsecurity_searcher = JustSecuritySearcher()
 
-            # Parse the response for future implementation
-            # soup = BeautifulSoup(response.content, 'html.parser')
+            # Search Just Security's Jan6 clearinghouse
+            papers = justsecurity_searcher.search(
+                query=query,
+                max_results=max_results,
+                clearinghouse='jan6',
+                document_type=document_type
+            )
 
-            # Look for document links and tables
-            # This is a simplified implementation - would need more specific parsing
-            # based on the actual structure of the Public Citizen archive
+            # Convert source to maintain consistency with Jan6 API
+            for paper in papers:
+                paper.source = 'jan6'
+                if paper.extra:
+                    paper.extra['justsecurity_fallback'] = True
 
-            logger.info("Public Citizen fallback search not yet fully implemented")
-            return []
+            logger.info("Just Security fallback returned %d documents", len(papers))
+            return papers
 
         except Exception as e:
-            logger.error("Public Citizen search failed: %s", e)
+            logger.error("Just Security fallback search failed: %s", e)
             return []
 
     def download_pdf(

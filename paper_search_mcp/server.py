@@ -12,6 +12,8 @@ from .academic_platforms.iacr import IACRSearcher
 # from .academic_platforms.hub import SciHubSearcher
 from .government_platforms.gao import GAOSearcher
 from .government_platforms.jan6 import Jan6Searcher
+from .government_platforms.justsecurity import JustSecuritySearcher
+from .government_platforms.govinfo import GovInfoSearcher
 from .paper import Paper
 
 # Initialize MCP server
@@ -26,6 +28,8 @@ google_scholar_searcher = GoogleScholarSearcher()
 iacr_searcher = IACRSearcher()
 gao_searcher = GAOSearcher()
 jan6_searcher = Jan6Searcher()
+justsecurity_searcher = JustSecuritySearcher()
+govinfo_searcher = GovInfoSearcher()
 # scihub_searcher = SciHubSearcher()
 
 
@@ -429,6 +433,171 @@ async def read_jan6_document(
     except Exception as e:
         print(f"Error reading Jan6 document {document_id}: {e}")
         return ""
+
+
+# Just Security tools
+@mcp.tool()
+async def search_justsecurity(
+    query: str,
+    max_results: int = 10,
+    clearinghouse: str = "all",
+    document_type: str = None,
+    date_filter: str = None,
+) -> List[Dict]:
+    """Search Just Security legal and national security documents.
+
+    Args:
+        query: Search query string (e.g., 'january 6', 'trump trials', 'classified documents').
+        max_results: Maximum number of documents to return (default: 10).
+        clearinghouse: Which clearinghouse to search ('jan6', 'trump_trials', 'russia', 'mar_a_lago', 'manhattan_da', 'all').
+        document_type: Filter by type ('analysis', 'court_filing', 'transcript', 'timeline', 'report').
+        date_filter: Date filter ('week', 'month', '6months', 'year') or None.
+    Returns:
+        List of Just Security document metadata in dictionary format.
+    """
+    try:
+        documents = justsecurity_searcher.search(
+            query=query,
+            max_results=max_results,
+            clearinghouse=clearinghouse,
+            document_type=document_type,
+            date_filter=date_filter
+        )
+        return [doc.to_dict() for doc in documents]
+    except Exception as e:
+        print(f"Error searching Just Security: {e}")
+        return []
+
+
+@mcp.tool()
+async def download_justsecurity(
+    document_id: str,
+    save_path: str = "./downloads",
+) -> str:
+    """Download a Just Security document as HTML.
+
+    Args:
+        document_id: Document identifier (e.g., post ID or URL slug).
+        save_path: Directory to save the document (default: './downloads').
+    Returns:
+        str: Path to the downloaded HTML file.
+    """
+    try:
+        return justsecurity_searcher.download_document(document_id, save_path)
+    except Exception as e:
+        print(f"Error downloading Just Security document {document_id}: {e}")
+        return ""
+
+
+@mcp.tool()
+async def read_justsecurity_document(
+    document_id: str,
+    save_path: str = "./downloads",
+) -> str:
+    """Read and extract text content from a Just Security document.
+
+    Args:
+        document_id: Document identifier (e.g., post ID or URL slug).
+        save_path: Directory where the document is/will be saved (default: './downloads').
+    Returns:
+        str: The extracted text content of the document.
+    """
+    try:
+        return justsecurity_searcher.read_document(document_id, save_path)
+    except Exception as e:
+        print(f"Error reading Just Security document {document_id}: {e}")
+        return ""
+
+
+# GovInfo tools
+@mcp.tool()
+async def search_govinfo(
+    query: str,
+    max_results: int = 10,
+    collection: str = "all",
+    date_range: str = None,
+    congress: str = None,
+    doc_class: str = None,
+) -> List[Dict]:
+    """Search official U.S. Government documents via GovInfo.gov.
+
+    Args:
+        query: Search query string (e.g., 'climate change', 'healthcare', 'defense').
+        max_results: Maximum number of documents to return (default: 10).
+        collection: Collection category ('congressional', 'regulatory', 'presidential', 'legal', 'reports', 'all') or specific collection code (e.g., 'BILLS', 'FR').
+        date_range: Date range filter (e.g., '2023', '2023-01', '2023-01-01:2023-12-31').
+        congress: Congress number filter (e.g., '118').
+        doc_class: Document class filter (e.g., 'bills', 'hr').
+    Returns:
+        List of government document metadata in dictionary format.
+    """
+    try:
+        documents = govinfo_searcher.search(
+            query=query,
+            max_results=max_results,
+            collection=collection,
+            date_range=date_range,
+            congress=congress,
+            doc_class=doc_class
+        )
+        return [doc.to_dict() for doc in documents]
+    except Exception as e:
+        print(f"Error searching GovInfo: {e}")
+        return []
+
+
+@mcp.tool()
+async def download_govinfo(
+    package_id: str,
+    save_path: str = "./downloads",
+) -> str:
+    """Download a government document PDF from GovInfo.gov.
+
+    Args:
+        package_id: GovInfo package ID (e.g., 'BILLS-118hr1-ih', 'FR-2023-01-10').
+        save_path: Directory to save the PDF (default: './downloads').
+    Returns:
+        str: Path to the downloaded PDF file.
+    """
+    try:
+        return govinfo_searcher.download_pdf(package_id, save_path)
+    except Exception as e:
+        print(f"Error downloading GovInfo document {package_id}: {e}")
+        return ""
+
+
+@mcp.tool()
+async def read_govinfo_document(
+    package_id: str,
+    save_path: str = "./downloads",
+) -> str:
+    """Read and extract text content from a government document.
+
+    Args:
+        package_id: GovInfo package ID (e.g., 'BILLS-118hr1-ih', 'FR-2023-01-10').
+        save_path: Directory where the PDF is/will be saved (default: './downloads').
+    Returns:
+        str: The extracted text content of the document.
+    """
+    try:
+        return govinfo_searcher.read_document(package_id, save_path)
+    except Exception as e:
+        print(f"Error reading GovInfo document {package_id}: {e}")
+        return ""
+
+
+@mcp.tool()
+async def get_govinfo_collections() -> List[Dict]:
+    """Get available document collections from GovInfo.gov.
+
+    Returns:
+        List of available collections with metadata.
+    """
+    try:
+        return govinfo_searcher.get_collections()
+    except Exception as e:
+        print(f"Error fetching GovInfo collections: {e}")
+        return []
 
 
 if __name__ == "__main__":

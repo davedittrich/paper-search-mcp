@@ -34,7 +34,9 @@ A Model Context Protocol (MCP) server for searching and downloading academic pap
 ## Features
 
 - **Multi-Source Support**: Search and download papers from arXiv, PubMed, bioRxiv, medRxiv, Google Scholar, and IACR ePrint Archive.
-- **Government Document Access**: Search and download government reports from GAO (Government Accountability Office) and January 6th Committee documents.
+- **Government Document Access**: Search and download government reports from GAO (Government Accountability Office), January 6th Committee documents, official U.S. Government publications via GovInfo.gov, and legal analysis from Just Security.
+- **Comprehensive Coverage**: Access to 40+ government document collections including Congressional materials, Federal Register, Presidential documents, and legal publications.
+- **Legal & National Security Documents**: Specialized access to Just Security's document clearinghouses covering January 6th Committee materials, Trump trials, congressional investigations, and national security analysis.
 - **Standardized Output**: Papers and reports are returned in a consistent dictionary format via the `Paper` class.
 - **Asynchronous Tools**: Efficiently handles network requests using `httpx`.
 - **MCP Integration**: Compatible with MCP clients for LLM context enhancement.
@@ -159,6 +161,46 @@ We welcome contributions! Here's how to get started:
 #### Government Platforms
 - [√] GAO (Government Accountability Office)
 - [√] January 6th Committee (witness testimony, hearings, reports)
+- [√] GovInfo.gov (Official U.S. Government documents from all three branches)
+- [√] Just Security (Legal analysis and national security document clearinghouses)
+
+### Government Document Collections (via GovInfo.gov)
+
+#### Congressional Materials
+- [√] Congressional Bills (BILLS)
+- [√] Congressional Record (CREC, CRECB)
+- [√] Congressional Reports (CRPT)
+- [√] Congressional Hearings (CHRG)
+- [√] Committee Prints (CPRT)
+- [√] Congressional Documents (CDOC)
+- [√] Congressional Directory (CDIR)
+- [√] House Journal (HJOURNAL)
+
+#### Federal Regulations & Presidential Documents
+- [√] Federal Register (FR)
+- [√] Code of Federal Regulations (CFR)
+- [√] Presidential Documents (CPD)
+- [√] Public Papers of Presidents (PPP)
+
+#### Legal Publications
+- [√] Public and Private Laws (PLAW)
+- [√] United States Code (USCODE)
+- [√] Statutes at Large (STATUTE)
+- [√] U.S. Courts Opinions (USCOURTS)
+
+#### Government Reports
+- [√] GAO Reports (GAOREPORTS)
+- [√] Budget Documents (BUDGET)
+- [√] Economic Reports (ERP, ECONI)
+- [√] Government Manual (GOVMAN)
+
+### Just Security Document Clearinghouses
+- [√] January 6th Committee materials and analysis
+- [√] Trump criminal and civil trial documents
+- [√] Congressional Russia investigation materials
+- [√] Mar-a-Lago classified documents case
+- [√] Manhattan DA prosecution materials
+- [√] National security legal analysis
 
 ### Planned Academic Platforms
 - [ ] Semantic Scholar
@@ -175,13 +217,14 @@ We welcome contributions! Here's how to get started:
 - [ ] Microsoft Academic
 
 ### Planned Government Platforms
-- [ ] Federal Court Documents
+- [ ] Federal Court Documents (PACER integration)
 - [ ] Congressional Research Service (CRS)
-- [ ] Inspector General Reports
-- [ ] Federal Register
+- [ ] Inspector General Reports (cross-agency)
 - [ ] USPTO Patent Database
 - [ ] EPA Reports
 - [ ] CDC Publications
+- [ ] Public Citizen document archives
+- [ ] Additional legal clearinghouses
 
 ---
 

@@ -22,6 +22,10 @@ python -m paper_search_mcp.server
 
 # Install for development with optional dev dependencies  
 uv add pytest flake8
+
+# Build the Docker image
+docker build -t paper-search-server .
+
 ```
 
 ## Architecture
@@ -37,6 +41,7 @@ The codebase follows a plugin-based architecture with separate categories for di
 ### Academic Platform Integration
 
 Each academic platform has its own searcher class in `academic_platforms/`:
+
 - `arxiv.py` - arXiv preprint server (RSS feeds)
 - `pubmed.py` - PubMed biomedical database (E-utilities API) 
 - `biorxiv.py` / `medrxiv.py` - bioRxiv/medRxiv preprint servers (web scraping)
@@ -47,12 +52,14 @@ Each academic platform has its own searcher class in `academic_platforms/`:
 ### Government Platform Integration
 
 Government document platforms in `government_platforms/`:
+
 - `gao.py` - Government Accountability Office reports and publications (RSS feeds + web scraping)
 - `jan6.py` - January 6th Committee documents from Internet Archive (API + OCR text)
 
 ### Tool Categories
 
 The MCP server exposes three types of tools for each platform:
+
 - **Search tools**: `search_arxiv`, `search_pubmed`, `search_gao`, `search_jan6`, etc. - Return paper/document metadata
 - **Download tools**: `download_arxiv`, `download_biorxiv`, `download_gao`, `download_jan6`, etc. - Download PDF files
 - **Read tools**: `read_arxiv_paper`, `read_iacr_paper`, `read_gao_report`, `read_jan6_document`, etc. - Extract text from papers/documents
@@ -60,6 +67,7 @@ The MCP server exposes three types of tools for each platform:
 ## Dependencies
 
 Core dependencies (see `pyproject.toml`):
+
 - `fastmcp` - MCP server framework
 - `mcp[cli]>=1.6.0` - MCP SDK
 - `requests` - HTTP client for API calls
