@@ -33,6 +33,8 @@ gao_searcher = GAOSearcher()
 jan6_searcher = Jan6Searcher()
 justsecurity_searcher = JustSecuritySearcher()
 govinfo_searcher = GovInfoSearcher()
+justsecurity_searcher = JustSecuritySearcher()
+govinfo_searcher = GovInfoSearcher()
 
 # Asynchronous helper to adapt synchronous searchers
 async def async_search(searcher, query: str, max_results: int, **kwargs) -> List[Dict]:
